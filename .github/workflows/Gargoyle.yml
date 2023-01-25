@@ -11,7 +11,7 @@ jobs:
       - name: update Gargoyle
         run: |
           gargoyle_host=https://www.gargoyle-router.com/
-          download_url=$gargoyle_host$(curl -s $gargoyle_host/download.php | grep "stable.*downloads/images/.*-x86-64-combined-ext4\.img\.gz" | head -n 1 | grep -o "downloads/images/.*-x86-64-combined-ext4\.img\.gz")
+          download_url=$gargoyle_host$(curl -s $gargoyle_host/download.php | grep "downloads/images/.*-x86-64-combined-ext4\.img\.gz" | head -n 1)
           img_gz_file_name=$(basename "$download_url")
           img_file_name=$(basename "$img_gz_file_name" .gz)
           vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
@@ -22,7 +22,7 @@ jobs:
             gunzip "$img_gz_file_name"
             qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
             zip -m "$vhdx_zip_file_name" "$vhdx_file_name"
-            cp "$vhdx_zip_file_name" gargoyle_stable_latest-x86-64-combined-ext4.vhdx.zip
+            cp "$vhdx_zip_file_name" gargoyle_latest-x86-64-combined-ext4.vhdx.zip
             rm "$img_file_name"
           fi
       - uses: stefanzweifel/git-auto-commit-action@v4
