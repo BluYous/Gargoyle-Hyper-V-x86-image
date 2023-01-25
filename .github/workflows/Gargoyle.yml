@@ -15,14 +15,14 @@ jobs:
           img_gz_file_name=$(basename "$download_url")
           img_file_name=$(basename "$img_gz_file_name" .gz)
           vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
-          vhdx_zip_file_name=$vhdx_file_name.zip
+          vhdx_gz_file_name=$vhdx_file_name.gz
           if [ ! -e "$vhdx_zip_file_name" ]; then
             sudo apt install qemu-utils -y
             curl -sLO "$download_url"
             gunzip "$img_gz_file_name"
             qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
-            zip -m "$vhdx_zip_file_name" "$vhdx_file_name"
-            cp "$vhdx_zip_file_name" gargoyle_latest-x86-64-combined-ext4.vhdx.zip
+            gzip "$vhdx_file_name"
+            cp "$vhdx_gz_file_name" gargoyle_latest-x86-64-combined-ext4.vhdx.gz
             rm "$img_file_name"
           fi
       - uses: stefanzweifel/git-auto-commit-action@v4
