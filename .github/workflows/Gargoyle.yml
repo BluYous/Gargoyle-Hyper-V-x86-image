@@ -8,8 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: install qemu-utils
-        run: sudo apt install qemu-utils -y
       - name: update Gargoyle
         run: |
           gargoyle_host=https://www.gargoyle-router.com/
@@ -19,6 +17,7 @@ jobs:
           vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
           vhdx_zip_file_name=$vhdx_file_name.zip
           if [ ! -e "$vhdx_zip_file_name" ]; then
+            sudo apt install qemu-utils -y
             curl -sLO "$download_url"
             gunzip "$img_gz_file_name"
             qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
