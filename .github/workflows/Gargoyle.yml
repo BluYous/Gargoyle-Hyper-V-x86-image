@@ -21,7 +21,7 @@ jobs:
             curl -sLO "$download_url"
             gunzip "$img_gz_file_name"
             qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
-            gzip "$vhdx_file_name"
+            gzip -n "$vhdx_file_name"
             cp "$vhdx_gz_file_name" gargoyle_latest-x86-64-combined-ext4.vhdx.gz
             rm "$img_file_name"
           fi
