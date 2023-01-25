@@ -1,0 +1,1 @@
+# Gargoyle-Hyper-V-x86-image
