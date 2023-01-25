@@ -1,0 +1,29 @@
+name: update Gargoyle
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: install qemu-utils
+        run: sudo apt install qemu-utils -y
+      - name: update Gargoyle
+        run: |
+          gargoyle_host=https://www.gargoyle-router.com/
+          download_url=$gargoyle_host$(curl -s $gargoyle_host/download.php | grep "stable.*downloads/images/.*-x86-64-combined-ext4\.img\.gz" | head -n 1 | grep -o "downloads/images/.*-x86-64-combined-ext4\.img\.gz")
+          img_gz_file_name=$(basename "$download_url")
+          img_file_name=$(basename "$img_gz_file_name" .gz)
+          vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
+          vhdx_zip_file_name=$vhdx_file_name.zip
+          if [ ! -e "$vhdx_zip_file_name" ]; then
+            curl -sLO "$download_url"
+            gunzip "$img_gz_file_name"
+            qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
+            zip -m "$vhdx_zip_file_name" "$vhdx_file_name"
+            ln -sf "$vhdx_zip_file_name" gargoyle_stable_latest-x86-64-combined-ext4.vhdx.zip
+            rm "$img_file_name"
+          fi
+      - uses: stefanzweifel/git-auto-commit-action@v4
