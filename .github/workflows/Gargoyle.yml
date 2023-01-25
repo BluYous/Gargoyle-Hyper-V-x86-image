@@ -11,7 +11,7 @@ jobs:
       - name: update Gargoyle
         run: |
           gargoyle_host=https://www.gargoyle-router.com/
-          download_url=$gargoyle_host$(curl -s $gargoyle_host/download.php | grep "downloads/images/.*-x86-64-combined-ext4\.img\.gz" | head -n 1)
+          download_url=$gargoyle_host$(curl -s $gargoyle_host/download.php | grep -o "downloads/images/.*-x86-64-combined-ext4\.img\.gz" | head -n 1)
           img_gz_file_name=$(basename "$download_url")
           img_file_name=$(basename "$img_gz_file_name" .gz)
           vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
