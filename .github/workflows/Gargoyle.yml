@@ -22,7 +22,7 @@ jobs:
             gunzip "$img_gz_file_name"
             qemu-img convert "$img_file_name" -O vhdx "$vhdx_file_name"
             zip -m "$vhdx_zip_file_name" "$vhdx_file_name"
-            ln -sf "$vhdx_zip_file_name" gargoyle_stable_latest-x86-64-combined-ext4.vhdx.zip
+            cp "$vhdx_zip_file_name" gargoyle_stable_latest-x86-64-combined-ext4.vhdx.zip
             rm "$img_file_name"
           fi
       - uses: stefanzweifel/git-auto-commit-action@v4
