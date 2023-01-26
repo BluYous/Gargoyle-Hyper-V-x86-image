@@ -16,7 +16,7 @@ jobs:
           img_file_name=$(basename "$img_gz_file_name" .gz)
           vhdx_file_name=$(basename "$img_gz_file_name" .img.gz).vhdx
           vhdx_gz_file_name=$vhdx_file_name.gz
-          if [ ! -e "$vhdx_zip_file_name" ]; then
+          if [ ! -e "$vhdx_gz_file_name" ]; then
             sudo apt install qemu-utils -y
             curl -sLO "$download_url"
             gunzip "$img_gz_file_name"
